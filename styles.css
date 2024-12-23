@@ -1,88 +1,89 @@
 /* Basic Styling */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: center;
-  padding: 40px;
-  background-color: #f5f5f5;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: linear-gradient(135deg, #f5f5f5, #e3e3e3);
-}
-
-/* Header Styling */
-h1 {
-  color: #4285F4;
-  font-size: 32px;
-  letter-spacing: 1px;
-  transition: color 0.3s ease;
-}
-
-h1:hover {
-  color: #34A853;
-}
-
-/* Button Styling */
-button {
-  background-color: #34A853;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
-  transition: background-color 0.3s, transform 0.2s;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  outline: none;
-}
-
-/* Hover Effects */
-button:hover {
-  background-color: #0F9D58;
-  transform: translateY(-3px); /* Button lift effect */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Focus Effect for Accessibility */
-button:focus {
-  outline: 3px solid #4285F4;
-}
-
-/* Smooth Animation for Button */
-button:active {
-  transform: translateY(1px); /* Slight push effect when clicked */
-}
-
-/* Add Animation to the Page Elements */
-h1 {
-  animation: slideIn 0.8s ease-out;
-}
-
-/* Animation for header */
-@keyframes slideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-30px);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    padding: 40px;
+    background-color: #f5f5f5;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #f5f5f5, #e3e3e3);
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+  
+  /* Header Styling */
+  h1 {
+    color: #4285F4;
+    font-size: 32px;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
   }
-}
-
-/* Styling the background and body layout */
-body::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('https://www.transparenttextures.com/patterns/diagonal-stripes-light.png') repeat;
-  opacity: 0.1;
-  pointer-events: none;
-}
+  
+  h1:hover {
+    color: #34A853;
+  }
+  
+  /* Button Styling */
+  button {
+    background-color: #34A853;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+  
+  /* Hover Effects */
+  button:hover {
+    background-color: #0F9D58;
+    transform: translateY(-3px); /* Button lift effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Focus Effect for Accessibility */
+  button:focus {
+    outline: 3px solid #4285F4;
+  }
+  
+  /* Smooth Animation for Button */
+  button:active {
+    transform: translateY(1px); /* Slight push effect when clicked */
+  }
+  
+  /* Add Animation to the Page Elements */
+  h1 {
+    animation: slideIn 0.8s ease-out;
+  }
+  
+  /* Animation for header */
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Styling the background and body layout */
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/diagonal-stripes-light.png') repeat;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+  
