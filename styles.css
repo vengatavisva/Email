@@ -11,12 +11,12 @@ body {
     align-items: center;
     height: 100vh;
     background: linear-gradient(135deg, #f5f5f5, #e3e3e3);
-    width: 400px; /* Increase the width for the popup */
-    height: auto; /* Let the height adjust according to the content */
-    max-width: 500px; /* Set a max width to ensure it doesn’t stretch too wide */
-    min-height: 400px; /* Ensure it has a minimum height for proper scaling */
-    padding: 40px 60px; /* More padding for a bigger look */
-    box-sizing: border-box; /* Include padding in the width/height calculations */
+    width: 400px; 
+    height: auto; 
+    max-width: 500px; 
+    min-height: 400px; 
+    padding: 40px 60px; 
+    box-sizing: border-box; 
   }
   
   /* Header Styling */
