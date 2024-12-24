@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Gmail Email Organizer",
+  "name": "Smart Email Organizer",
   "version": "1.0",
-  "description": "A Chrome extension to organize Gmail emails with categorization.",
+  "description": "An email organizer that categorizes emails and flags priorities for college students.",
   "permissions": ["identity", "storage"],
   "host_permissions": ["https://mail.google.com/*"],
   "oauth2": {

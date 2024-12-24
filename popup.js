@@ -1,28 +1,16 @@
-chrome.identity.getAuthToken({ interactive: true }, (token) => {
-  if (chrome.runtime.lastError) {
-    console.error(chrome.runtime.lastError);
-    document.getElementById("emailList").textContent = "Error fetching emails.";
-    return;
-  }
-
-  fetch("https://www.googleapis.com/gmail/v1/users/me/messages", {
-    headers: {
-      Authorization: `Bearer ${token}`
+document.getElementById("fetch-emails").addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "fetchEmails" }, (response) => {
+    const emailList = document.getElementById("email-list");
+    emailList.innerHTML = ""; // Clear previous emails
+    if (response.error) {
+      emailList.textContent = "Error fetching emails.";
+      return;
     }
-  })
-    .then(response => response.json())
-    .then(data => {
-      const emailList = document.getElementById("emailList");
-      emailList.innerHTML = ""; // Clear previous content
 
-      data.messages.forEach((message) => {
-        const emailItem = document.createElement("div");
-        emailItem.textContent = `Email ID: ${message.id}`;
-        emailList.appendChild(emailItem);
-      });
-    })
-    .catch(error => {
-      console.error("Error fetching emails:", error);
-      document.getElementById("emailList").textContent = "Failed to fetch emails.";
+    response.emails.forEach(email => {
+      const div = document.createElement("div");
+      div.textContent = `ID: ${email.id}, Category: ${email.category}`;
+      emailList.appendChild(div);
     });
+  });
 });
