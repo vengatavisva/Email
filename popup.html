@@ -3,12 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gmail Organizer</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Email Organizer</title>
+  <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <h1>Gmail Organizer</h1>
-  <div id="emailList">Fetching emails...</div>
+  <div class="container">
+    <h1>Email Organizer</h1>
+    <p class="instructions">Categorize your Gmail emails with ease.</p>
+    <button id="fetch-emails">Fetch Emails</button>
+    <div id="email-list">
+      <!-- Emails will be dynamically added here -->
+    </div>
+  </div>
   <script src="popup.js"></script>
 </body>
 </html>
