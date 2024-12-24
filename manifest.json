@@ -1,14 +1,20 @@
 {
   "manifest_version": 3,
-  "name": "AI-Gmail",
+  "name": "Gmail Email Organizer",
   "version": "1.0",
-  "description": "A basic Chrome extension for Gmail.",
-  "permissions": [
-    "storage"
-  ],
-  "host_permissions": [
-    "https://mail.google.com/*"
-  ],
+  "description": "A Chrome extension to organize Gmail emails with categorization.",
+  "permissions": ["identity", "storage"],
+  "host_permissions": ["https://mail.google.com/*"],
+  "oauth2": {
+    "client_id": "813615032801-t25gvba90l0s68it680bu2hh9cg2q1ns.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.readonly",
+      "https://www.googleapis.com/auth/gmail.modify"
+    ]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

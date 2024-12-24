@@ -1,35 +1,43 @@
-/* Basic Styling */
+/* General Body Styling */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
-  padding: 40px;
-  background-color: #f5f5f5;
   margin: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  background-color: #f5f5f5;
   background: linear-gradient(135deg, #f5f5f5, #e3e3e3);
-  width: 400px; 
-  height: auto; 
-  max-width: 500px; 
-  min-height: 400px; 
-  padding: 40px 60px; 
-  box-sizing: border-box; 
+  min-height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
+  width: 600px; /* Increased width for a larger display */
+  height: 600px; /* Increased height for a larger display */
+  max-width: 800px; /* Add a maximum width for responsiveness */
+  max-height: 800px; /* Add a maximum height for responsiveness */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for aesthetics */
+}
+
+/* Responsive Layout */
+body {
+  margin: auto;
 }
 
 /* Header Styling */
 h1 {
   color: #4285F4;
-  font-size: 36px; /* Increased font size */
+  font-size: 3rem; /* Increased font size for larger display */
   letter-spacing: 1px;
-  transition: color 0.3s ease;
-  margin-bottom: 20px; /* Space below the header */
+  transition: color 0.3s ease, transform 0.3s ease;
+  margin-bottom: 30px; /* Increased spacing for larger layout */
 }
 
+/* Header Hover Effects */
 h1:hover {
   color: #34A853;
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
 /* Button Styling */
@@ -37,22 +45,24 @@ button {
   background-color: #34A853;
   color: white;
   border: none;
-  padding: 18px 36px; /* Bigger padding for the button */
+  padding: 16px 32px;
   border-radius: 50px;
   cursor: pointer;
-  font-size: 20px; /* Larger font size */
+  font-size: 1.2rem; /* Adjusted font size for larger display */
   font-weight: bold;
-  transition: background-color 0.3s, transform 0.2s;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   outline: none;
-  margin-top: 20px; /* Add some space between the button and the header */
+  margin-top: 20px;
+  width: 50%; /* Adjusted to ensure proper button alignment on a larger layout */
+  max-width: 400px;
 }
 
 /* Hover Effects */
 button:hover {
   background-color: #0F9D58;
-  transform: translateY(-5px); /* Button lift effect */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* More prominent shadow on hover */
+  transform: translateY(-3px); /* Button lift effect */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Focus Effect for Accessibility */
@@ -60,29 +70,44 @@ button:focus {
   outline: 3px solid #4285F4;
 }
 
-/* Smooth Animation for Button */
+/* Active Click Effect */
 button:active {
-  transform: translateY(1px); /* Slight push effect when clicked */
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Add Animation to the Page Elements */
+/* Animations */
 h1 {
-  animation: slideIn 0.8s ease-out;
+  animation: fadeIn 1s ease-out;
 }
 
-/* Animation for header */
-@keyframes slideIn {
-  0% {
+button {
+  animation: popIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(-20px);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* Styling the background and body layout */
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Background Styling with Subtle Pattern */
 body::before {
   content: '';
   position: absolute;
@@ -93,4 +118,28 @@ body::before {
   background: url('https://www.transparenttextures.com/patterns/diagonal-stripes-light.png') repeat;
   opacity: 0.1;
   pointer-events: none;
+  z-index: -1; /* Ensure it stays behind content */
+}
+
+/* Add Smooth Transitions for Interactive Elements */
+button,
+h1 {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Media Queries for Small Screens */
+@media (max-width: 768px) {
+  body {
+    padding: 20px;
+    width: 100%; /* Adjust for smaller screen sizes */
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  button {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
 }

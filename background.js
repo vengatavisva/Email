@@ -1,41 +1,46 @@
-const CLIENT_ID = "813615032801-t25gvba90l0s68it680bu2hh9cg2q1ns.apps.googleusercontent.com"; // Replace with your Client ID
-const SCOPES = "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.modify"; // Read and modify Gmail
+function categorizeEmail(email) {
+  const categories = {
+    assignments: ["assignment", "homework", "due"],
+    personal: ["hi", "hello", "meeting"],
+    promotions: ["sale", "offer", "discount"]
+  };
 
-// Handle OAuth2 authentication
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.identity.getAuthToken({ interactive: true }, function (token) {
-    if (chrome.runtime.lastError) {
-      console.log("Error getting token: ", chrome.runtime.lastError);
-    } else {
-      console.log("Authenticated successfully");
-      // Fetch emails after successful authentication
-      fetchEmails(token);
+  for (const [category, keywords] of Object.entries(categories)) {
+    if (keywords.some((keyword) => email.snippet.includes(keyword))) {
+      return category;
     }
-  });
-});
+  }
+  return "uncategorized";
+}
 
-// Fetch emails using Gmail API
-function fetchEmails(token) {
-  fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages", {
-    method: "GET",
+chrome.identity.getAuthToken({ interactive: true }, (token) => {
+  if (chrome.runtime.lastError) {
+    console.error(chrome.runtime.lastError);
+    return;
+  }
+
+  fetch("https://www.googleapis.com/gmail/v1/users/me/messages", {
     headers: {
       Authorization: `Bearer ${token}`
     }
   })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
-      // Send the email data to the popup script
-      chrome.runtime.sendMessage({ action: "displayEmails", emails: data.messages });
+      console.log("Fetched emails:", data);
+      data.messages.forEach((message) => {
+        fetch(`https://www.googleapis.com/gmail/v1/users/me/messages/${message.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+          .then(response => response.json())
+          .then(email => {
+            const category = categorizeEmail(email);
+            console.log(`Email ID: ${email.id}, Category: ${category}`);
+          });
+      });
     })
-    .catch(error => console.error("Error fetching emails:", error));
-}
-
-// Listen for messages to trigger email fetch
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "getEmails") {
-    chrome.identity.getAuthToken({ interactive: true }, function (token) {
-      fetchEmails(token);
+    .catch(error => {
+      console.error("Error fetching emails:", error);
     });
-  }
 });
