@@ -6,7 +6,7 @@
   "permissions": ["identity", "storage"],
   "host_permissions": ["https://mail.google.com/*"],
   "oauth2": {
-    "client_id": "813615032801-t25gvba90l0s68it680bu2hh9cg2q1ns.apps.googleusercontent.com",
+    "client_id": "YOUR_CLIENT_ID_HERE",
     "scopes": [
       "https://www.googleapis.com/auth/gmail.readonly",
       "https://www.googleapis.com/auth/gmail.modify"
