@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,22 @@
 </head>
 <body>
   <h1>Gmail Organizer</h1>
-  <div id="emailList">Fetching emails...</div>
+  
+  <!-- Input Section -->
+  <div id="controls">
+    <input type="text" id="searchInput" placeholder="Search emails..." aria-label="Search emails">
+    <button id="searchButton">Search</button>
+  </div>
+
+  <!-- Email List Section -->
+  <div id="emailList">
+    <p>Fetching emails...</p>
+  </div>
+
+  <!-- Organize Section -->
+  <button id="organizeButton">Organize Emails</button>
+
   <script src="popup.js"></script>
 </body>
 </html>
+
