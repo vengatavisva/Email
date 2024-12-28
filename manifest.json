@@ -2,18 +2,32 @@
   "manifest_version": 3,
   "name": "Smart Email Organizer",
   "version": "1.0",
-  "description": "Organize your Gmail emails by categories.",
+  "description": "Fetch and organize Gmail emails.",
   "permissions": ["identity", "storage"],
-  "host_permissions": ["https://www.googleapis.com/"],
+  "host_permissions": ["https://mail.google.com/*", "https://www.googleapis.com/*"],
+  "oauth2": {
+    "client_id": "813615032801-t25gvba90l0s68it680bu2hh9cg2q1ns.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.readonly"
+    ]
+  },
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Smart Email Organizer"
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
   },
-  "oauth2": {
-    "client_id": "813615032801-t25gvba90l0s68it680bu2hh9cg2q1ns.apps.googleusercontent.com",
-    "scopes": ["https://www.googleapis.com/auth/gmail.readonly"]
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
   }
 }

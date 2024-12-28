@@ -1,35 +1,38 @@
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "fetchEmails") {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "fetchEmails") {
     chrome.identity.getAuthToken({ interactive: true }, (token) => {
       if (chrome.runtime.lastError) {
-        console.error(chrome.runtime.lastError.message);
+        console.error(chrome.runtime.lastError);
         sendResponse({ emails: [] });
         return;
       }
 
-      // Fetch emails using Gmail API
       fetch("https://www.googleapis.com/gmail/v1/users/me/messages", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
         .then((response) => response.json())
         .then((data) => {
           if (!data.messages) {
-            sendResponse({ emails: [] });
-            return;
+            throw new Error("No messages found");
           }
 
           const emailPromises = data.messages.map((message) =>
-            fetch(`https://www.googleapis.com/gmail/v1/users/me/messages/${message.id}`, {
-              headers: { Authorization: `Bearer ${token}` }
-            }).then((res) => res.json())
+            fetch(
+              `https://www.googleapis.com/gmail/v1/users/me/messages/${message.id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            ).then((res) => res.json())
           );
 
-          Promise.all(emailPromises)
-            .then((emails) => sendResponse({ emails }))
-            .catch((error) => {
-              console.error("Error fetching email details:", error);
-              sendResponse({ emails: [] });
-            });
+          return Promise.all(emailPromises);
+        })
+        .then((emails) => {
+          sendResponse({ emails });
         })
         .catch((error) => {
           console.error("Error fetching emails:", error);
@@ -37,6 +40,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         });
     });
 
-    return true; // Required to allow asynchronous sendResponse
+    return true; // Keep the message channel open for asynchronous response
   }
 });

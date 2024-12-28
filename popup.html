@@ -4,14 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Email Organizer</title>
-  <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="container">
-    <h1>Smart Email Organizer</h1>
-    <button id="fetch-emails">Fetch and Categorize Emails</button>
-    <div id="categories"></div>
-    <div id="emails"></div>
+  <div class="container">
+    <!-- Header with Open Mail Button -->
+    <header class="header">
+      <h1>📧 Smart Email Organizer</h1>
+      <button id="open-mail" class="open-mail-btn hidden">Open Mail</button>
+    </header>
+
+    <!-- Initial View -->
+    <div id="initial-view">
+      <p class="subtitle">Fetch your Gmail inbox and open emails directly.</p>
+      <button id="fetch-emails" class="fetch-btn">Fetch Emails</button>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="hidden">
+      <div class="spinner"></div>
+      <p>Fetching emails... Please wait.</p>
+    </div>
+
+    <!-- Fetched Emails View -->
+    <div id="emails-view" class="hidden">
+      <h2>Fetched Emails</h2>
+      <div id="emails" class="emails"></div>
+    </div>
   </div>
   <script src="popup.js"></script>
 </body>
