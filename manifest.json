@@ -2,25 +2,18 @@
   "manifest_version": 3,
   "name": "Smart Email Organizer",
   "version": "1.0",
-  "description": "An email organizer that categorizes emails and flags priorities for college students.",
+  "description": "Organize your Gmail emails by categories.",
   "permissions": ["identity", "storage"],
-  "host_permissions": ["https://mail.google.com/*"],
-  "oauth2": {
-    "client_id": "YOUR_CLIENT_ID_HERE",
-    "scopes": [
-      "https://www.googleapis.com/auth/gmail.readonly",
-      "https://www.googleapis.com/auth/gmail.modify"
-    ]
-  },
+  "host_permissions": ["https://www.googleapis.com/"],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
+    "default_title": "Smart Email Organizer"
+  },
+  "oauth2": {
+    "client_id": "813615032801-t25gvba90l0s68it680bu2hh9cg2q1ns.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/gmail.readonly"]
   }
 }

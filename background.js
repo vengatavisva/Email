@@ -1,60 +1,42 @@
-function categorizeEmail(email) {
-  const categories = {
-    assignments: ["assignment", "homework", "due"],
-    personal: ["meeting", "hello", "hi"],
-    promotions: ["sale", "offer", "discount"],
-    social: ["invitation", "friend", "party"]
-  };
-
-  for (const [category, keywords] of Object.entries(categories)) {
-    if (keywords.some(keyword => email.snippet?.includes(keyword))) {
-      return category;
-    }
-  }
-  return "uncategorized";
-}
-
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "fetchEmails") {
     chrome.identity.getAuthToken({ interactive: true }, (token) => {
       if (chrome.runtime.lastError) {
-        sendResponse({ error: chrome.runtime.lastError.message });
+        console.error(chrome.runtime.lastError.message);
+        sendResponse({ emails: [] });
         return;
       }
 
+      // Fetch emails using Gmail API
       fetch("https://www.googleapis.com/gmail/v1/users/me/messages", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       })
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           if (!data.messages) {
-            sendResponse({ error: "No messages found." });
+            sendResponse({ emails: [] });
             return;
           }
 
-          const emails = [];
-          const fetchEmailDetails = data.messages.map(message =>
+          const emailPromises = data.messages.map((message) =>
             fetch(`https://www.googleapis.com/gmail/v1/users/me/messages/${message.id}`, {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            })
-              .then(res => res.json())
-              .then(email => {
-                const category = categorizeEmail(email);
-                emails.push({ id: email.id, category });
-              })
+              headers: { Authorization: `Bearer ${token}` }
+            }).then((res) => res.json())
           );
 
-          Promise.all(fetchEmailDetails).then(() => {
-            sendResponse({ emails });
-          });
+          Promise.all(emailPromises)
+            .then((emails) => sendResponse({ emails }))
+            .catch((error) => {
+              console.error("Error fetching email details:", error);
+              sendResponse({ emails: [] });
+            });
         })
-        .catch(error => sendResponse({ error: error.message }));
+        .catch((error) => {
+          console.error("Error fetching emails:", error);
+          sendResponse({ emails: [] });
+        });
     });
 
-    return true; // Keeps the message channel open for async response.
+    return true; // Required to allow asynchronous sendResponse
   }
 });
