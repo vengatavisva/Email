@@ -3,12 +3,20 @@
   "name": "Smart Email Organizer",
   "version": "1.0",
   "description": "Fetch and organize Gmail emails.",
-  "permissions": ["identity", "storage"],
-  "host_permissions": ["https://mail.google.com/*", "https://www.googleapis.com/*"],
+  "permissions": [
+    "identity",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://mail.google.com/*",
+    "https://www.googleapis.com/*"
+  ],
   "oauth2": {
-    "client_id": "813615032801-t25gvba90l0s68it680bu2hh9cg2q1ns.apps.googleusercontent.com",
+    "client_id": "793321981700-t2slv1s65lglkmnhk31adqe3iulgnvqa.apps.googleusercontent.com",
     "scopes": [
-      "https://www.googleapis.com/auth/gmail.readonly"
+      "https://www.googleapis.com/auth/gmail.readonly",
+      "https://www.googleapis.com/auth/gmail.modify"
     ]
   },
   "background": {
