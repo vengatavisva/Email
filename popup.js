@@ -1,70 +1,157 @@
-let allEmails = [];
-let selectedEmailId = null;
+let emailsBySender = {};
+let instagramEmails = [];
 
-// Function to fetch emails
 function fetchEmails() {
   const initialView = document.getElementById("initial-view");
   const loadingSpinner = document.getElementById("loading-spinner");
-  const emailsView = document.getElementById("emails-view");
-  const emailsDiv = document.getElementById("emails");
-  const openMailBtn = document.getElementById("open-mail");
+  const foldersView = document.getElementById("folders-view");
 
-  // Show the loading spinner
+  // Show loading spinner and hide initial view
   initialView.classList.add("hidden");
   loadingSpinner.classList.remove("hidden");
 
-  // Simulate fetch emails
+  // Send message to fetch emails
   chrome.runtime.sendMessage({ action: "fetchEmails" }, (response) => {
-    // Hide the loading spinner
     loadingSpinner.classList.add("hidden");
 
-    if (response.emails.length === 0) {
-      emailsDiv.innerHTML = "<p>No emails found.</p>";
+    if (!response || response.emails.length === 0) {
+      const foldersContainer = document.getElementById("folders-container");
+      foldersContainer.innerHTML = "<p>No emails found.</p>";
     } else {
-      allEmails = response.emails;
-      selectedEmailId = allEmails[0].id; // Automatically select the first email
-      openMailBtn.classList.add("visible");
-      displayEmails(allEmails);
-      emailsView.classList.remove("hidden");
+      groupEmailsBySender(response.emails);
+      renderEmailFolders();
+      foldersView.classList.remove("hidden");
     }
   });
 }
 
-// Function to display emails
-function displayEmails(emails) {
-  const emailsDiv = document.getElementById("emails");
-  emailsDiv.innerHTML = ""; // Clear previous content
+function groupEmailsBySender(emails) {
+  emailsBySender = {}; // Clear previous groupings
+  instagramEmails = []; // Reset Instagram emails group
 
   emails.forEach((email) => {
-    const emailCard = document.createElement("div");
-    emailCard.classList.add("email-card");
-    emailCard.innerHTML = `
-      <h3>${email.payload.headers.find((header) => header.name === "Subject")?.value || "No Subject"}</h3>
-      <p><strong>From:</strong> ${
-        email.payload.headers.find((header) => header.name === "From")?.value || "Unknown Sender"
-      }</p>
-      <p>${email.snippet || "No preview available."}</p>
-    `;
-    emailsDiv.appendChild(emailCard);
+    const sender = email.payload?.headers?.find((header) => header.name === "From")?.value || "Unknown Sender";
+    const senderName = sender.split("<")[0].trim(); // Extract sender's name
 
-    emailCard.addEventListener("click", () => {
-      selectedEmailId = email.id;
+    // Check if the email is from Instagram
+    if (sender.includes("instagram.com")) {
+      instagramEmails.push(email); // Add Instagram emails to the instagramEmails array
+    } else {
+      // Otherwise, group them by sender
+      if (!emailsBySender[senderName]) {
+        emailsBySender[senderName] = [];
+      }
+      emailsBySender[senderName].push(email);
+    }
+  });
+}
+
+function renderEmailFolders() {
+  const foldersContainer = document.getElementById("folders-container");
+  foldersContainer.innerHTML = ""; // Clear previous content
+
+  // Always display Instagram emails first in a separate folder
+  if (instagramEmails.length > 0) {
+    const folderDiv = document.createElement("div");
+    folderDiv.classList.add("email-folder");
+    folderDiv.innerHTML = `
+      <img src="folder-icon.png" alt="Folder Icon" class="folder-icon">
+      <span class="folder-name">Instagram</span>
+    `;
+    foldersContainer.appendChild(folderDiv);
+
+    folderDiv.addEventListener("dblclick", () => {
+      displayEmailsFromSender("Instagram");
+    });
+  }
+
+  // Now render other emails by sender
+  Object.keys(emailsBySender).forEach((senderName) => {
+    const folderDiv = document.createElement("div");
+    folderDiv.classList.add("email-folder");
+    folderDiv.innerHTML = `
+      <img src="folder-icon.png" alt="Folder Icon" class="folder-icon">
+      <span class="folder-name">${senderName}</span>
+    `;
+    foldersContainer.appendChild(folderDiv);
+
+    folderDiv.addEventListener("dblclick", () => {
+      displayEmailsFromSender(senderName);
     });
   });
 }
 
-// Function to open the selected email in Gmail
-function openEmail() {
-  if (selectedEmailId) {
-    const gmailUrl = `https://mail.google.com/mail/u/0/#inbox/${selectedEmailId}`;
-    chrome.tabs.create({ url: gmailUrl });
+function displayEmailsFromSender(senderName) {
+  const emailsContainer = document.getElementById("emails");
+  const emailsView = document.getElementById("emails-view");
+  const foldersView = document.getElementById("folders-view");
+  const folderNameHeading = document.getElementById("folder-name");
+
+  // Hide folders view and show emails view
+  foldersView.classList.add("hidden");
+  emailsView.classList.remove("hidden");
+
+  if (senderName === "Instagram") {
+    // Show Instagram emails
+    folderNameHeading.textContent = "Instagram";
+    emailsContainer.innerHTML = ""; // Clear previous content
+
+    instagramEmails.forEach((email) => {
+      const subject = email.payload?.headers?.find((header) => header.name === "Subject")?.value || "No Subject";
+      const snippet = email.snippet || "No preview available.";
+
+      const emailCard = document.createElement("div");
+      emailCard.classList.add("email-card");
+      emailCard.innerHTML = `
+        <h3>${subject}</h3>
+        <p>${snippet}</p>
+      `;
+      emailsContainer.appendChild(emailCard);
+
+      emailCard.addEventListener("dblclick", () => {
+        openEmail(email.id);
+      });
+    });
   } else {
-    alert("No email selected.");
+    // Show emails from other senders
+    folderNameHeading.textContent = senderName;
+    emailsContainer.innerHTML = ""; // Clear previous content
+
+    emailsBySender[senderName].forEach((email) => {
+      const subject = email.payload?.headers?.find((header) => header.name === "Subject")?.value || "No Subject";
+      const snippet = email.snippet || "No preview available.";
+
+      const emailCard = document.createElement("div");
+      emailCard.classList.add("email-card");
+      emailCard.innerHTML = `
+        <h3>${subject}</h3>
+        <p>${snippet}</p>
+      `;
+      emailsContainer.appendChild(emailCard);
+
+      emailCard.addEventListener("dblclick", () => {
+        openEmail(email.id);
+      });
+    });
   }
 }
 
-// Event Listeners
+function openEmail(emailId) {
+  const gmailUrl = `https://mail.google.com/mail/u/0/#inbox/${emailId}`;
+  chrome.tabs.create({ url: gmailUrl });
+}
+
+// Back to Folders Button Listener
+document.getElementById("back-to-folders").addEventListener("click", () => {
+  const foldersView = document.getElementById("folders-view");
+  const emailsView = document.getElementById("emails-view");
+
+  // Hide emails view and show folders view
+  emailsView.classList.add("hidden");
+  foldersView.classList.remove("hidden");
+});
+
+// Event Listener for Fetch Emails Button
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("fetch-emails").addEventListener("click", fetchEmails);
-  document.getElementById("open-mail").addEventListener("click", openEmail);
 });
