@@ -3,128 +3,84 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #f9f9f9;
-  color: #333;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  height: 100vh;
-  box-sizing: border-box;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f9;
 }
 
 .container {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 100vh;
+  max-width:max-content; /* Increased width */
+  height: 800px; /* Increased height */
   padding: 20px;
-  width: 90%;
-  max-width: 600px;
-  overflow-y: auto;
-  max-height: 90vh;
+  background-color: #ce88e3;
+  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: auto; /* Added to handle overflow */
 }
 
-/* Header */
+/* Header Styles */
 .header {
-  display: flex;
-  justify-content: space-between;
+  display:grid;
   align-items: center;
-  margin-bottom: 20px;
+  margin-left:10px;
 }
 
 .header h1 {
   font-size: 1.5rem;
-  color: #4285f4;
+  margin-left: 15px;
 }
 
-.open-mail-btn {
-  background-color: #4285f4;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
+.change-account-btn {
+  display: grid;
+  margin-top:50px;
+  padding: 20px;
   font-size: 0.9rem;
-  display: none;
 }
 
-.open-mail-btn.visible {
-  display: block;
+#fetch-emails{
+  margin-left:75px;
 }
 
-.open-mail-btn:hover {
-  background-color: #2a65d3;
-}
 
-/* Initial View */
-.subtitle {
-  text-align: center;
-  margin-bottom: 10px;
-  color: #555;
-}
 
-.fetch-btn {
-  display: block;
-  margin: 0 auto;
-  background-color: #34a853;
-  color: white;
+
+.btn {
+  background-color: #007bff;
+  color: #fff;
   border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 5px;
+  padding: 10px 15px;
   cursor: pointer;
   font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-.fetch-btn:hover {
-  background-color: #0f9d58;
+.btn:hover {
+  background-color: #0056b3;
 }
 
-/* Fetched Emails View */
 .hidden {
   display: none;
 }
 
-#emails-view h2 {
-  font-size: 1.2rem;
-  color: #333;
-  margin-bottom: 12px;
+/* Initial View */
+.subtitle {
+  margin-bottom: 15px;
+  color: #ffffff;
 }
 
-.emails {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.email-card {
-  background: #f5f5f5;
-  border-radius: 8px;
-  padding: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.email-card h3 {
-  font-size: 1rem;
-  color: #333;
-}
-
-.email-card p {
-  margin: 5px 0;
-  color: #555;
-}
-/* Spinner Styles */
-#loading-spinner {
-  text-align: center;
-  margin-top: 20px;
-}
-
+/* Loading Spinner */
 .spinner {
-  margin: 0 auto 10px;
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #4285f4;
-  border-radius: 50%;
   width: 40px;
   height: 40px;
+  border: 5px solid #ccc;
+  border-top: 5px solid #007bff;
+  border-radius: 50%;
   animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+  margin-top: 30px;
 }
 
 @keyframes spin {
@@ -134,4 +90,148 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+p{
+  margin-top:30px;
+  margin-left:30px;
+  color: brown;
+
+}
+
+.emails-container {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping of email cards */
+  gap: 10px;
+}
+
+.email-card {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1 1 calc(33.333% - 20px); /* Three cards per row */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
+}
+
+.email-card:hover {
+  background-color: #e7e7e7;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+.email-card.selected {
+  border-color: #007bff;
+  background-color: #e7f3ff;
+}
+
+
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.popup-header h2 {
+  margin: 0;
+}
+
+.close-btn {
+  background-color: #d9534f;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Containers */
+#folders-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping to the next row */
+  gap: 10px;       /* Add space between folders */
+  justify-content: center; /* Center folders horizontally */
+}
+
+.email-folder {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center icon and name */
+  width: 80px;         /* Adjust width to fit content */
+  margin: 10px;
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for a better look */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.email-folder:hover {
+  background-color: #e7e7e7;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Stronger hover effect */
+}
+
+/* Folder Icon */
+.folder-icon {
+  width: 60px;  /* Reduced size for better alignment */
+  height: 60px; /* Equal height and width */
+  margin-bottom: 5px;
+}
+
+/* Folder Name */
+.folder-name {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 5px;
+  word-break: break-word; /* Prevent long names from breaking layout */
+  color: #333;
+}
+
+/* Categories Section */
+.email-category {
+  margin-top: 20px;
+}
+
+.email-category h3 {
+  background-color: #f0f0f0;
+  padding: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 3px;
+  text-align: center;
+  color: #007bff;
+}
+
+.email-card {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.email-card:hover {
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.email-card h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.email-card p {
+  font-size: 0.9rem;
+  color: #666;
 }
