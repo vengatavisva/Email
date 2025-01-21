@@ -13,7 +13,7 @@
     "https://www.googleapis.com/*"
   ],
   "oauth2": {
-    "client_id": "793321981700-t2slv1s65lglkmnhk31adqe3iulgnvqa.apps.googleusercontent.com",
+    "client_id": "http://813615032801-t25gvba90l0s68it680bu2hh9cg2q1ns.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/gmail.readonly",
       "https://www.googleapis.com/auth/gmail.modify"
